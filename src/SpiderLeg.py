@@ -10,29 +10,35 @@ from bs4 import BeautifulSoup
 class SpiderLeg:
     
     def __init__(self):
-        url = 'http://www.ace-hire.com/'
+        print("=== Spider Leg ===")
     
     def getTitle(self, url):
         page = urlopen(url)
         soup = BeautifulSoup(page, 'lxml')
-        print(soup.title.string)
+        return soup.title.string
         
     def getHyperlink(self, url):
         page = urlopen(url)
         soup = BeautifulSoup(page, 'lxml')
+        links = []
         for link in soup.find_all('a'):
-            print(link.get('href'))
+            links.append(link.get('href'))
+        return links
         
     def getImages(self, url):    
         page = urlopen(url)
         soup = BeautifulSoup(page, 'lxml')
+        images = []
         for link in soup.find_all('img'):
-            print(link.get('src'))    
+            images.append(link.get('src'))
+        return images
         
     def getMeta(self, url):
         page = urlopen(url)
         soup = BeautifulSoup(page, 'lxml')
+        meta = []
         for link in soup.find_all('meta'):
-            print(link.get('name'))
+            meta.append(link.get('name'))
+        return meta
 
 

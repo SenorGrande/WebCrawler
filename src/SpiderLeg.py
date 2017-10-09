@@ -7,35 +7,48 @@ Created on 16/09/2017
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
+def openUrl(url):
+        try:
+            page = urlopen(url)
+            soup = BeautifulSoup(page, 'lxml')
+        except:
+            print("Unable to open url")
+            return None
+        return soup
+
 class SpiderLeg:
     
     def __init__(self):
         print("=== Spider Leg ===")
     
     def getTitle(self, url):
-        page = urlopen(url)
-        soup = BeautifulSoup(page, 'lxml')
+        soup = openUrl(url) # urlopen
+        if soup == None:
+            return None
         return soup.title.string
         
     def getHyperlink(self, url):
-        page = urlopen(url)
-        soup = BeautifulSoup(page, 'lxml')
+        soup = openUrl(url)
+        if soup == None:
+            return None
         links = []
         for link in soup.find_all('a'):
             links.append(link.get('href'))
         return links
         
-    def getImages(self, url):    
-        page = urlopen(url)
-        soup = BeautifulSoup(page, 'lxml')
+    def getImages(self, url):
+        soup = openUrl(url)
+        if soup == None:
+            return None
         images = []
         for link in soup.find_all('img'):
             images.append(link.get('src'))
         return images
         
     def getMeta(self, url):
-        page = urlopen(url)
-        soup = BeautifulSoup(page, 'lxml')
+        soup = openUrl(url)
+        if soup == None:
+            return None
         meta = []
         for link in soup.find_all('meta'):
             meta.append(link.get('name'))

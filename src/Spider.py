@@ -17,6 +17,7 @@ class Spider:
 		depth = 0 # the current depth of the crawl
 		unvisited = None
 		visited = []
+		visitedAdj = []
 		maxDepth = None
 		keyword = None
 		spiderleg = SpiderLeg.SpiderLeg()
@@ -28,6 +29,7 @@ class Spider:
 		print("=== Setup ===")
 		self.unvisited = ulinks
 		self.visited = []
+		self.visitedAdj = []
 		self.maxDepth = udepth
 		self.keyword = ukeyword
 		self.spiderleg = SpiderLeg.SpiderLeg()
@@ -41,6 +43,7 @@ class Spider:
 		# loops through URLs in unvisited, adding them to visited
 		while len(self.unvisited) != 0:
 			print("====================")
+			currentAdj = []
 			url = self.unvisited.pop(0)
 			self.depth = url[0] # this will get depth value of current URL
 			self.depth+=1 # depth for the links we will be adding
@@ -59,10 +62,8 @@ class Spider:
 			
 			#images = self.spiderleg.getImages(url[1])
 			meta = self.spiderleg.getMeta(url[1])
-			#print(meta)
 			for content in meta:
 				if (self.keyword in content) and (url[1] not in self.results):
-					#print("8=============D~~~~~~~~~")
 					self.results.append(url[1])
 			
 			# 
@@ -74,10 +75,14 @@ class Spider:
 						parser = urlparse(link)
 						if (parser.scheme != '') and (parser.netloc != '') and (parser.scheme != None) and (parser.netloc != None):
 							self.unvisited.append([self.depth, link])
+							currentAdj.append(len(self.visited))# also need to add link to adj matrix ???
+			self.visitedAdj.append(currentAdj)
 			print("====================")
 		
 		# the visited array - print this out once done crawling
 		print(self.visited)
+		print("Adjacency List")
+		print(self.visitedAdj)
 
 	def getResults(self):
 		# return list of links that had keyword in meta

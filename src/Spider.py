@@ -75,7 +75,7 @@ class Spider:
 						parser = urlparse(link)
 						if (parser.scheme != '') and (parser.netloc != '') and (parser.scheme != None) and (parser.netloc != None):
 							self.unvisited.append([self.depth, link])
-							currentAdj.append(len(self.visited))# also need to add link to adj matrix ???
+							currentAdj.append(len(self.unvisited))# also need to add link to adj matrix ???
 			self.visitedAdj.append(currentAdj)
 			print("====================")
 		

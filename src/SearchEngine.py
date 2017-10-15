@@ -4,6 +4,9 @@ Created on 10/10/2017
 @author: Connor
 '''
 
+# Add page rank stuff
+# will need to get visited and visited adj list
+
 import Spider
 import codecs
 

@@ -51,7 +51,6 @@ class SpiderLeg:
             return None
         meta = []
         for link in soup.find_all('meta'):
-            meta.append(link.get('name')) # get description tag also ??? multiple arrays for diff tags or 2D array?
+                if (link.get('content') != None):
+                        meta.append(link.get('content')) # get name tag also ??? multiple arrays for diff tags or 2D array?
         return meta
-
-

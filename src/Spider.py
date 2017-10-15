@@ -22,6 +22,7 @@ class Spider:
 		spiderleg = SpiderLeg.SpiderLeg()
 		images = []
 		meta = []
+		results = []
 
 	def setup(self, ulinks, udepth, ukeyword):
 		print("=== Setup ===")
@@ -32,6 +33,7 @@ class Spider:
 		self.spiderleg = SpiderLeg.SpiderLeg()
 		self.images = []
 		self.meta = []
+		self.results = []
 		
 	def crawl(self):
 		print("=== Crawl ===")
@@ -54,8 +56,16 @@ class Spider:
 			print("-----------")
 			print(self.unvisited)
 			print("-----------")
-			#images = spiderleg.getImages(url[1])
-			#meta = spiderleg.getMeta(url[1])
+			
+			#images = self.spiderleg.getImages(url[1])
+			meta = self.spiderleg.getMeta(url[1])
+			#print(meta)
+			for content in meta:
+				if (self.keyword in content) and (url[1] not in self.results):
+					#print("8=============D~~~~~~~~~")
+					self.results.append(url[1])
+			
+			# 
 			if (self.spiderleg.getHyperlink(url[1]) != None):
 				links = self.spiderleg.getHyperlink(url[1])
 				for link in links:
@@ -67,10 +77,9 @@ class Spider:
 			print("====================")
 		
 		# the visited array - print this out once done crawling
+		print(self.visited)
 
 	def getResults(self):
 		# return list of links that had keyword in meta
-		links = ["look", "im", "a", "pickle", "morty"]
+		links = self.results
 		return links
-	
-	

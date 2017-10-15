@@ -27,12 +27,12 @@ keyword = input("Enter keyword to search for: ")
 # Create Spider, passing parameters, searching for meta
 links = []
 
-unvisited = [[0,'http://sarsaparilla/crawlTest.html']] # needs to handle multiple
+seeds = [[0,'http://sarsaparilla/crawlTest.html']] # needs to handle multiple REMOVE THIS
 maxDepth = 2 # the max depth the crawl can go
 
 spider = Spider.Spider()
-spider.setup(unvisited, maxDepth, keyword) # This has no effect whatsoever
-#spider.crawl()
+spider.setup(seeds, maxDepth, keyword) # This has no effect whatsoever
+spider.crawl()
 
 # Write the links to a text file
 results = spider.getResults()

@@ -26,8 +26,12 @@ class Spider:
 	def setup(self, ulinks, udepth, ukeyword):
 		print("=== Setup ===")
 		self.unvisited = ulinks
+		self.visited = []
 		self.maxDepth = udepth
 		self.keyword = ukeyword
+		self.spiderleg = SpiderLeg.SpiderLeg()
+		self.images = []
+		self.meta = []
 		
 	def crawl(self):
 		print("=== Crawl ===")

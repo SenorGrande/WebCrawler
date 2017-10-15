@@ -1,56 +1,59 @@
-'''
-Created on 16/09/2017
-
-@author: Connor
-'''
-
-from urllib.request import urlopen
+import urllib.request
 from bs4 import BeautifulSoup
 
-def openUrl(url):
-        try:
-            page = urlopen(url)
-            soup = BeautifulSoup(page, 'lxml')
-        except:
-            print("Unable to open url")
-            return None
-        return soup
+def getTitle( url ):
+	ret = 'No Title Found'
+	soup = openUrl(url)# urlopen
+	if soup is not None and soup.title is not None:
+		ret = soup.title.text
+	return ret
 
-class SpiderLeg:
-    
-    def __init__(self):
-        print("=== Spider Leg ===")
-    
-    def getTitle(self, url):
-        soup = openUrl(url) # urlopen
-        if soup == None:
-            return None
-        return soup.title.string
-        
-    def getHyperlink(self, url):
-        soup = openUrl(url)
-        if soup == None:
-            return None
-        links = []
-        for link in soup.find_all('a'):
-            links.append(link.get('href'))
-        return links
-        
-    def getImages(self, url):
-        soup = openUrl(url)
-        if soup == None:
-            return None
-        images = []
-        for link in soup.find_all('img'):
-            images.append(link.get('src'))
-        return images
-        
-    def getMeta(self, url):
-        soup = openUrl(url)
-        if soup == None:
-            return None
-        meta = []
-        for link in soup.find_all('meta'):
-                if (link.get('content') != None):
-                        meta.append(link.get('content')) # get name tag also ??? multiple arrays for diff tags or 2D array?
-        return meta
+def getHyperLink( url ):
+	links = []
+	soup = openUrl(url)
+	if soup != None:
+		for link in soup.find_all('a'):
+			links.append(link.get('href'))
+	return links
+
+def getImages( url ):
+	soup = openUrl(url)
+	images = []
+	if soup != None:
+		imageTags = soup.find_all(['img', 'image'])
+		for tag in imageTags:
+			if tag is not None:
+				images.append([tag.get('src')])
+				images[-1].append(imageHelper(tag, 'alt'))
+				images[-1].append(imageHelper(tag, 'width'))
+				images[-1].append(imageHelper(tag, 'height'))
+	return images
+	
+def getMeta( url ):
+	soup = openUrl(url)
+	meta = []
+	if soup != None:
+		metaTags = soup.find_all('meta')
+		for tag in metaTags:
+			if tag is not None and tag.get('name') is not None:
+				if tag.get('content') is not None:
+					meta.append([tag.get('name'), tag.get('content')])
+				else:
+					meta.append([tag.get('name'), 'None'])
+	return meta
+
+def openUrl(url):
+	try:
+		page = urllib.request.urlopen(url)
+		soup = BeautifulSoup(page, 'lxml')
+	except urllib.error.URLError as e:
+		#print(e.reason)
+		soup = None
+	return soup
+
+def imageHelper( tag, attr ):
+	result = 'No ' + attr
+	if tag.get(attr) is not None:
+		result = tag.get(attr)
+	return result	
+

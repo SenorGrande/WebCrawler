@@ -26,6 +26,10 @@ class Spider:
 	def crawl(self):
 		print("=== Crawl ===")
 		
+		# open visited file here
+		# TO DO: might need to open txt file with w and clear it before a
+		file = open("visited.txt", "w")
+		
 		# loops through URLs in unvisited, adding them to visited
 		while len(self.unvisited) > 0:
 			print("====================")
@@ -35,6 +39,8 @@ class Spider:
 			self.depth = url[0] # this will get depth value of current URL
 			self.depth+=1 # depth for the links we will be adding
 			self.visited.append(url[1]) # does visited need the depth as well?
+			
+			file.writelines(url[1])
 
 			#if contents is HTML ???
 			print(url[1])
@@ -49,7 +55,8 @@ class Spider:
 					keywords = meta[1].lower()
 					if (self.keyword in keywords) and (url[1] not in self.results):
 						self.results.append(url[1])
-
+			
+			
 			# Add links on page to unvisited list
 			links = SpiderLeg.getHyperLink(url[1])
 			for link in links:
@@ -59,7 +66,6 @@ class Spider:
 					if parser.scheme != '' and parser.netloc != '' and parser.scheme != None and parser.netloc != None:
 						self.unvisited.append([self.depth, link])
 			
-			#
 			"""
 			if (self.spiderleg.getHyperlink(url[1]) != None):
 				links = self.spiderleg.getHyperlink(url[1])
@@ -79,6 +85,9 @@ class Spider:
 		print(self.visited)
 		#print("Adjacency List")
 		#print(self.visitedAdj)
+		
+		# close visited file here 
+		file.close()
 
 	def getResults(self):
 		# return list of links that had keyword in meta

@@ -13,7 +13,9 @@ def getHyperLink( url ):
 	soup = openUrl(url)
 	if soup != None:
 		for link in soup.find_all('a'):
-			links.append(link.get('href'))
+			absLink = urllib.parse.urljoin(url, link.get('href'))
+			if 'mailto' not in absLink:
+				links.append(absLink)
 	return links
 
 def getImages( url ):

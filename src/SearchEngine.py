@@ -1,7 +1,7 @@
 '''
 Created on 10/10/2017
 
-@author: Connor
+@author: Connor Hewett 15903849 & Craig Fraser
 '''
 
 # Add page rank stuff

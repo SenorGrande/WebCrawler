@@ -1,7 +1,7 @@
 '''
 Created on 16/09/2017
 
-@author: Connor
+@author: Connor Hewett 15903849 & Craig Fraser
 '''
 # beautiful soup 4
 # lxml

@@ -1,3 +1,8 @@
+'''
+Created on 16/09/2017
+
+@author: Connor Hewett 15903849 & Craig Fraser
+'''
 import urllib.request
 from bs4 import BeautifulSoup
 

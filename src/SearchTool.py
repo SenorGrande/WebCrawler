@@ -1,7 +1,7 @@
 '''
 Created on 10/10/2017
 
-@author: Connor
+@author: Connor Hewett 15903849 & Craig Fraser
 '''
 
 import Spider
@@ -35,8 +35,6 @@ maxDepth = 2 # the max depth the crawl can go
 spider = Spider.Spider(seeds, maxDepth, keyword)
 spider.crawl()
 
-
-
 # Write the links to a text file
 results = spider.getResults()
 
@@ -44,12 +42,9 @@ with codecs.open("link.txt", "w", "utf-8") as resFile:
 	#file = open("link.txt", "w")
 	#file.writelines(results)
 	for result in results:
-                resFile.write(result+'\n')
+		resFile.write(result+'\n')
 	#resFile.close()
 	
 # Print links to screen
 print("Results List: ")
 print(results)
-test = open("link.txt", "r")
-print("Results File: ")
-print(test.read())

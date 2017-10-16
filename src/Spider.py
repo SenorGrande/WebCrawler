@@ -84,6 +84,7 @@ class Spider:
 			self.visitedAdj.append(currentAdj)
 			print("====================")
 			"""
+		
 		# the visited array - print this out once done crawling
 		print("Visited: ")
 		print(self.visited)
@@ -106,6 +107,7 @@ i = 0
 for a in spoder.adjacencyList:
 	print(i, ': ', a)
 	i += 1	i += 1
+	i += 1
 =======
 #lanks = [[0, 'http://www.dustyfeet.com']]
 #spoder = Spider(lanks, 3, 'useless')

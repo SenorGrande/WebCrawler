@@ -1,7 +1,7 @@
 '''
 Created on 16/09/2017
 
-@author: Connor Hewett 15903849 & Craig Fraser
+@author: Connor Hewett 15903849 & Craig Fraser 15889604
 '''
 import urllib.request
 from bs4 import BeautifulSoup
@@ -55,6 +55,8 @@ def openUrl(url):
 		soup = BeautifulSoup(page, 'lxml')
 	except urllib.error.URLError as e:
 		#print(e.reason)
+		soup = None
+	except:
 		soup = None
 	return soup
 

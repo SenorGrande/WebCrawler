@@ -39,17 +39,14 @@ spider.crawl()
 # Write the links to a text file
 results = spider.results
 
-with codecs.open("link.txt", "w", "utf-8") as resFile:
-	#file = open("link.txt", "w")
-	#file.writelines(results)
-	for result in results:
-		resFile.write(result+'\n')
-	#resFile.close()
+file = open("results.txt", "w")
+for result in results:
+	file.write(result+'\r\n')
+file.close()
 	
 # Print links to screen
 print("Results List: ", results)
 print("Adjacenccy: ", spider.adjacencyList)
-
 
 
 # Calculate the page ranks using the adjacency list
@@ -62,7 +59,7 @@ transformed = [[0 for col in range(len(adjList))] for row in range(len(adjList))
 for i in range(len(adjList)):
 	if len(adjList[i]) == 0:
 		for j in range(len(adjList)):
-			pArray[i][j] = 1.0 / len(adjList)
+			pArray[i][j] = 1.0 / len(adjList) # Sinks
 	else:
 		for k in range(len(adjList)):
 			if k in adjList[i]:
@@ -70,50 +67,35 @@ for i in range(len(adjList)):
 			else:
 				pArray[i][k] = (1.0 - c) / len(adjList)
 
-#print(pArray)
-
 # Now we need to transform array (flip along main diagonal)
-"""
-for j in range(len(adjList)):
-	for k in range(len(adjList)):
-		transformed[j][k] = pArray[k][j]
-"""
 for j in range(0, len(adjList)):
 	for k in range(j+1, len(adjList)):
 		pArray[j][k],pArray[k][j] = pArray[k][j],pArray[j][k]
-#pArray = transformed
 
-#vArray = [1/6,1/6,1/6,1/6,1/6,1/6] # MAKE THIS
 vArray = [1/len(adjList) for col in range(len(adjList))]
-#scaled = temp = [0,0,0,0,0,0] # MAKE THIS
 scaled = [0 for col in range(len(adjList))]
 temp = [0 for col in range(len(adjList))]
 scale = 1.0
 
+# Calculate the page rank centrality
 for i in range(len(adjList)):
 	for j in range(len(adjList)):
 		for k in range(len(adjList)):
 			temp[j] += (pArray[j][k] * vArray[k])
-	vArray = temp
 	
+	vArray = temp
 	scale = 1.0 / min(vArray)
 	
 	for l in range(len(adjList)):
 		scaled[l] = vArray[l] * scale
-		
-	#print("=======================")
-	#print("Page rank centrality: ", str(scaled))
-	#print("=======================")
 
 rankRes = []
 
 for z in range(len(spider.results)):
-	#print(spider.visited.index(spider.results[z]))
-	#print(scaled[spider.visited.index(spider.results[z])])
 	rankRes.append([spider.visited.index(spider.results[z]), scaled[spider.visited.index(spider.results[z])]])
-rankRes.sort(key=lambda tup: tup[1], reverse=True) # This is slower but reversed
-#rankRes.sort(key=itemgetter(1)) # This is faster but not reversed
-#print(rankRes)
+
+#rankRes.sort(key=lambda tup: tup[1], reverse=True) # This is slower but reversed
+rankRes.sort(key=itemgetter(1), reverse=True) # This is faster but no need to import something
 
 for y in range(len(rankRes)):
 	print("Result: ", spider.visited[rankRes[y][0]])

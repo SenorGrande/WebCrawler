@@ -58,7 +58,6 @@ class Spider:
 		print("\n=======VISITED=======")
 		
 		# open visited file here
-		# TO DO: might need to open txt file with w and clear it before a
 		file = open("visited.txt", "w")
 		
 		# loops through URLs in unvisited, adding them to visited

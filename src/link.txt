@@ -1,5 +1,0 @@
-http://sarsaparilla/crawltest/page1.html
-http://sarsaparilla/crawltest/page2.html
-http://sarsaparilla/crawltest/page3.html
-http://sarsaparilla/crawltest/page4.html
-http://sarsaparilla/crawltest/page5.html

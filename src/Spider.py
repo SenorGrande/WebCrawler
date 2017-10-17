@@ -1,7 +1,6 @@
 '''
 Created on 16/09/2017
 
-@author: Connor Hewett 15903849 & Craig Fraser
 @author: Connor Hewett 15903849 & Craig Fraser 15889604
 '''
 import SpiderLeg
@@ -14,7 +13,7 @@ class Spider:
 		self.unvisited = ulinks
 		self.visited = []
 		self.maxDepth = udepth
-		self.keyword = ukeyword
+		self.searchKeyword = ukeyword
 		self.adjacencyList = []
 		self.results = []
 	
@@ -44,34 +43,39 @@ class Spider:
 					self.unvisited.append([self.depth, link])
 		self.adjacencyList.append(adjacencies)
 	
+	#Searches for a keyword in  a site's 'keywords' metadata
 	def keywordSearch(self, url):
-		# Search for the keyword in meta tag keywords
+		#Get metadata from SpiderLeg.
+		#Metadata is a list of key-value pairs; the key is the name, value is the content.
 		metaData = SpiderLeg.getMeta(url)
-		# loop through each thing in meta, if the 0 is keywords, search 1 for the keyword
+		
+		#Search for the key 'keywords' in meta.
 		for meta in metaData:
 			if 'keywords' in meta[0]:
 				keywords = meta[1].lower()
-				if (self.keyword in keywords) and (url not in self.results):
+				#If key is found, check if the search keyword is in the 'keywords' value
+				if (self.searchKeyword.lower() in keywords) and (url not in self.results):
+					#Add url to results if keyword match found
 					self.results.append(url)
 	
+	#Crawls websites from a list of seed urls to a given depth
 	def crawl(self):
 		print("\n=======VISITED=======")
 		
 		# open visited file here
-		# TO DO: might need to open txt file with w and clear it before a
 		file = open("visited.txt", "w")
 		
 		# loops through URLs in unvisited, adding them to visited
 		while len(self.unvisited) > 0:
 			print("=====================")
 			url = self.unvisited.pop(0)
-			#adjacencies = []
 			
 			self.depth = url[0] # this will get depth value of current URL
 			self.depth+=1 # depth for the links we will be adding
-			self.visited.append(url[1])
-			file.writelines(url[1] + "\r\n")
-
+			self.visited.append(url[1])#Add to visited list
+			file.writelines(url[1] + "\r\n")#Write to visited text file
+			
+			#Print the visited URL, and its index in the visited list
 			print((len(self.visited) - 1), ': ', url[1])
 			
 			self.keywordSearch(url[1])

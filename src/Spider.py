@@ -8,6 +8,13 @@ import urllib.parse
 
 class Spider:
 
+	#Constants
+	TUPLE_URL_INDEX = 1
+	TUPLE_DEPTH_INDEX = 0
+	META_KEY = 0
+	META_VALUE = 1
+	VISITED_FILE_NAME = "visited.txt"
+
 	def __init__(self, ulinks, udepth, ukeyword):
 		self.depth = 0
 		self.unvisited = ulinks
@@ -35,10 +42,10 @@ class Spider:
 					adjacencies.append(i)
 			
 			#If link already in the unvisited list...
-			elif link in (item[1] for item in self.unvisited):
+			elif link in (item[Spider.TUPLE_URL_INDEX] for item in self.unvisited):
 				try:
 					#Calculates the future 'visited' index of the link;
-					i = len(self.visited) + self.unvisited.index(self.unvisited[:][1])
+					i = len(self.visited) + self.unvisited.index(self.unvisited[:][Spider.TUPLE_URL_INDEX])
 				except:#Not sure if this is needed, do some testing.
 					i = -1
 					print('???')
@@ -67,8 +74,8 @@ class Spider:
 		
 		#Search for the key 'keywords' in meta.
 		for meta in metaData:
-			if 'keywords' in meta[0]:
-				keywords = meta[1].lower()
+			if 'keywords' in meta[Spider.META_KEY]:
+				keywords = meta[Spider.META_VALUE].lower()
 				#If key is found, check if the search keyword is in the 'keywords' value
 				if (self.searchKeyword.lower() in keywords) and (url not in self.results):
 					#Add url to results if keyword match found
@@ -79,29 +86,29 @@ class Spider:
 		print("\n=======VISITED=======")
 		
 		# open visited file here
-		file = open("visited.txt", "w")
+		file = open(Spider.VISITED_FILE_NAME, "w")
 		
 		# loops through URLs in unvisited, adding them to visited
 		while len(self.unvisited) > 0:
 			print("=====================")
 			url = self.unvisited.pop(0)
 			
-			self.depth = url[0] # this will get depth value of current URL
-			self.depth+=1 # depth for the links we will be adding
-			self.visited.append(url[1])#Add to visited list
-			file.writelines(url[1] + "\r\n")#Write to visited text file
+			self.depth = url[Spider.TUPLE_DEPTH_INDEX] # this will get depth value of current URL
+			self.depth += 1 # depth for the links we will be adding
+			self.visited.append(url[Spider.TUPLE_URL_INDEX])#Add to visited list
+			file.writelines(url[Spider.TUPLE_URL_INDEX] + "\r\n")#Write to visited text file
 			
 			#Print the visited URL, and its index in the visited list
-			print((len(self.visited) - 1), ': ', url[1])
+			print((len(self.visited) - 1), ': ', url[Spider.TUPLE_URL_INDEX])
 			
-			self.keywordSearch(url[1])
+			self.keywordSearch(url[Spider.TUPLE_URL_INDEX])
 			
-			self.processLinks(url[1])
+			self.processLinks(url[Spider.TUPLE_URL_INDEX])
 		
 		# close visited file here 
 		file.close()
 
-'''
+#'''
 #TESTING STUFF
 lanks = [[0, 'http://www.dustyfeet.com']]
 spoder = Spider(lanks, 3, 'tech')
@@ -117,5 +124,4 @@ print("\n=======RESULTS=======")
 for r in spoder.results:
 	print(r)
 print("")
-'''
-
+#'''

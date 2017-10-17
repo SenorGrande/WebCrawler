@@ -87,10 +87,10 @@ class Spider:
 
 
 #TESTING STUFF
-lanks = [[0, 'http://www.dustyfeet.com']]
-spoder = Spider(lanks, 3, 'tech')
-spoder.crawl()
-
+#lanks = [[0, 'http://www.dustyfeet.com']]
+#spoder = Spider(lanks, 3, 'tech')
+#spoder.crawl()
+"""
 print("\n=====ADJACENCIES=====")
 i = 0
 for a in spoder.adjacencyList:
@@ -101,5 +101,5 @@ print("\n=======RESULTS=======")
 for r in spoder.results:
 	print(r)
 print("")
-
+"""
 

@@ -1,4 +1,3 @@
-http://sarsaparilla/crawltest/crawlTest.html
 http://sarsaparilla/crawltest/page1.html
 http://sarsaparilla/crawltest/page2.html
 http://sarsaparilla/crawltest/page3.html

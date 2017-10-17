@@ -17,30 +17,46 @@ class Spider:
 		self.adjacencyList = []
 		self.results = []
 	
+	#Gets a list of hyperlinks, and adds them to visited/unvisited/adjacencyList as appropriate.
 	def processLinks(self, url):
-		# Add links on page to unvisited list
+		#Create list of adjacencies for this url 'node'
 		adjacencies = []
+		
+		#Get list of hyperlinks
 		links = SpiderLeg.getHyperLink(url)
+		
+		#Iterate through all the scraped links...
 		for link in links:
-			if link != None and link is not url:
-				parser = urllib.parse.urlparse(link)
-				if link in self.visited:
-					i = self.visited.index(link)
-					if i not in adjacencies:
-						adjacencies.append(i)
-				elif link in (item[1] for item in self.unvisited):
-					try:
-						i = len(self.visited) + self.unvisited.index(self.unvisited[:][1])
-					except:
-						i = -1
-						print('???')
-					if i not in adjacencies:
-						adjacencies.append(i)
-				elif self.depth < self.maxDepth and parser.scheme != '' and parser.netloc != '' and parser.scheme != None and parser.netloc != None:
-					i = len(self.visited) + len(self.unvisited)
-					if i not in adjacencies:
-						adjacencies.append(i)
-					self.unvisited.append([self.depth, link])
+			#If link has already been visited...
+			if link in self.visited:
+				#Add it to the adjacencies, if it's not already there.
+				i = self.visited.index(link)
+				if i not in adjacencies:
+					adjacencies.append(i)
+			
+			#If link already in the unvisited list...
+			elif link in (item[1] for item in self.unvisited):
+				try:
+					#Calculates the future 'visited' index of the link;
+					i = len(self.visited) + self.unvisited.index(self.unvisited[:][1])
+				except:#Not sure if this is needed, do some testing.
+					i = -1
+					print('???')
+				#Add the calculated adjacency to the list, if it's not already there.
+				if i not in adjacencies:
+					adjacencies.append(i)
+			
+			#If link not already in unvisited/visited, and doesn't exceed max depth...
+			elif self.depth < self.maxDepth:
+				#Calculate future 'visited' index of the link
+				i = len(self.visited) + len(self.unvisited)
+				#Add calculated adjacency to list, if it's not already there
+				if i not in adjacencies:
+					adjacencies.append(i)
+				#Add link to unvisited list
+				self.unvisited.append([self.depth, link])
+		
+		#Add list of current link's adjacencies to adjacencyList
 		self.adjacencyList.append(adjacencies)
 	
 	#Searches for a keyword in  a site's 'keywords' metadata
@@ -85,12 +101,12 @@ class Spider:
 		# close visited file here 
 		file.close()
 
-
+'''
 #TESTING STUFF
-#lanks = [[0, 'http://www.dustyfeet.com']]
-#spoder = Spider(lanks, 3, 'tech')
-#spoder.crawl()
-"""
+lanks = [[0, 'http://www.dustyfeet.com']]
+spoder = Spider(lanks, 3, 'tech')
+spoder.crawl()
+
 print("\n=====ADJACENCIES=====")
 i = 0
 for a in spoder.adjacencyList:
@@ -101,5 +117,5 @@ print("\n=======RESULTS=======")
 for r in spoder.results:
 	print(r)
 print("")
-"""
+'''
 

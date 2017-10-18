@@ -108,7 +108,7 @@ class Spider:
 		# close visited file here 
 		file.close()
 
-#'''
+'''
 #TESTING STUFF
 lanks = [[0, 'http://www.dustyfeet.com']]
 spoder = Spider(lanks, 3, 'tech')
@@ -124,4 +124,4 @@ print("\n=======RESULTS=======")
 for r in spoder.results:
 	print(r)
 print("")
-#'''
+'''

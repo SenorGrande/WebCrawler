@@ -1,2 +1,5 @@
-http://sarsaparilla/crawltest/crawlTest.html
-http://www.nytimes.com/2006/08/28/technology/28link.html?scp=6&sq=%22stuart%20frankel%22&st=cse
+http://sarsaparilla/crawltest/page1.html
+http://sarsaparilla/crawltest/page2.html
+http://sarsaparilla/crawltest/page3.html
+http://sarsaparilla/crawltest/page4.html
+http://sarsaparilla/crawltest/page5.html

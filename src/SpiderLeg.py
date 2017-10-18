@@ -4,8 +4,10 @@ Created on 16/09/2017
 @author: Connor Hewett 15903849 & Craig Fraser 15889604
 '''
 import urllib.request
+import urllib.parse
 from bs4 import BeautifulSoup
 
+#Scrapes a site for its title, returning it as a String
 def getTitle( url ):
 	ret = 'No Title Found'
 	soup = openUrl(url)
@@ -14,6 +16,7 @@ def getTitle( url ):
 		ret = soup.title.text
 	return ret
 
+	#Scrapes a site for its links, returning them as a list of strings
 def getHyperLink( url ):
 	links = []
 	soup = openUrl(url)
@@ -28,10 +31,11 @@ def getHyperLink( url ):
 			parsedUrl = urllib.parse.urlparse(absLink)
 			
 			#If url can be parsed correctly, and is not a mailto: link, add it to the list
-			if 'mailto' not in absLink and absLink != None and absLink != url and parsedUrl.scheme != '' and parsedUrl.netloc != '' and parsedUrl.scheme != None and parsedUrl.netloc != None:#Gotta be a better way to do this
+			if 'mailto' not in absLink and '.jpg' not in absLink and '.pdf' not in absLink and absLink != None and absLink != url and parsedUrl.scheme != '' and parsedUrl.netloc != '' and parsedUrl.scheme != None and parsedUrl.netloc != None:#Gotta be a better way to do this
 				links.append(absLink)
 	return links
 
+#Scrapes a site for its images, returning a list of [src, alt, width, height] lists.
 def getImages( url ):
 	soup = openUrl(url)
 	images = []
@@ -48,7 +52,8 @@ def getImages( url ):
 				images[-1].append(imageHelper(tag, 'width'))
 				images[-1].append(imageHelper(tag, 'height'))
 	return images
-	
+
+#Scrapes a site for its Metadata, returning a list of [name, content] key-values pairs	
 def getMeta( url ):
 	soup = openUrl(url)
 	meta = []
@@ -65,17 +70,19 @@ def getMeta( url ):
 					meta.append([tag.get('name'), 'None'])
 	return meta
 
+#Parses a URL and makes a soup object from it	
 def openUrl(url):
 	try:
 		page = urllib.request.urlopen(url)
 		soup = BeautifulSoup(page, 'lxml')
 	except urllib.error.URLError as e:
-		#print(e.reason)
+		print('Not Visited: ', e.reason)
 		soup = None
 	except:
 		soup = None
 	return soup
 
+#Helper method for scraphing images
 def imageHelper( tag, attr ):
 	result = 'No ' + attr
 	if tag.get(attr) is not None:

@@ -1,23 +1,32 @@
 '''
 Created on 10/10/2017
 
-@author: Connor Hewett 15903849 & Craig Fraser
+@author: Connor Hewett 15903849 & Craig Fraser 15889604
 '''
 
 import Spider
+import SpiderLeg
 import codecs
+from operator import itemgetter
+import urllib.parse
 
+# if keyword in meta keywords, add to list, write to txt & display to screen
 maxDepth = 3 # the max depth the crawl will travel
 RESULT_URL = 0 # Index position for URL
 RESULT_RANK = 1 # Index position for Page Rank
 
-# list for seed URLs that user inputs
 seeds = [[0,'http://sarsaparilla/crawltest/crawlTest.html']]
+
+# list for seed URLs that user inputs
 usrInput = input("Enter seed URL or press ENTER to continue: ")
 
 while (usrInput != "" and usrInput != " "):
-	seed = [0, usrInput]
-	seeds.append(seed)
+	check = urllib.parse.urlparse(usrInput)
+	if check.netloc != '' and check.scheme != '':
+		seed = [0, usrInput]
+		seeds.append(seed)
+	else:
+		print('Invalid URL')
 	usrInput = input("Enter seed URL or press ENTER to continue: ")
 	# TODO validate the user's input to check its a valid link
 		
@@ -26,15 +35,15 @@ keyword = input("Enter keyword to search for: ").lower() # TODO: make sure this 
 spider = Spider.Spider(seeds, maxDepth, keyword) # Create spider object initialised with the users seed urls and keyword
 spider.crawl() # Start crawling process
 
-c = 0.5 # This is the damping factor - change this to 0.15 like google?
+results = spider.results # Get list of URL results from the Spider
 adjList = spider.adjacencyList
+c = 0.5 # This is the damping factor - change this to 0.15 like google?
 pArray = [[0 for col in range(len(adjList))] for row in range(len(adjList))] # Stores the page ranks matrix
 vArray = [1/len(adjList) for col in range(len(adjList))]
 scaled = [0 for col in range(len(adjList))]
 temp = [0 for col in range(len(adjList))]
 scale = 1.0
 rankRes = [] # Store the results hyperlinks and corresponding page rank centrality
-results = spider.results # Get list of URL results from the Spider
 
 # Write the results to a text file
 file = open("results.txt", "w")
@@ -77,7 +86,11 @@ for i in range(len(spider.results)):
 
 rankRes.sort(key=lambda tup: tup[1], reverse=True) # Sort the results from highest page rank to lowest
 
-# Print out the results in order they were sorted into
-for i in range(len(rankRes)):
-	print("Result: ", spider.visited[rankRes[i][RESULT_URL]])
-	print("Rank: ", rankRes[i][RESULT_RANK])
+i = 1
+print("\n===KEYWORD MATCHES===")
+for y in range(len(rankRes)):
+	print(i, ": ", spider.visited[rankRes[y][RESULT_URL]]) 
+	print("  ", SpiderLeg.getTitle(spider.visited[rankRes[y][RESULT_URL]]))
+	print("  (Rank: ", rankRes[y][RESULT_RANK], ")\n")
+	i+=1
+print("")

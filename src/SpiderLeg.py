@@ -7,6 +7,8 @@ import urllib.request
 import urllib.parse
 from bs4 import BeautifulSoup
 
+exclusions = ['mailto', '.jpg', '.pdf', '.asp', 'twitter', 'facebook', '.jpeg', 'youtube']
+
 #Scrapes a site for its title, returning it as a String
 def getTitle( url ):
 	ret = 'No Title Found'
@@ -30,8 +32,8 @@ def getHyperLink( url ):
 			#Parse the link to ensure it's valid
 			parsedUrl = urllib.parse.urlparse(absLink)
 			
-			#If url can be parsed correctly, and is not a mailto: link, add it to the list
-			if 'mailto' not in absLink and '.jpg' not in absLink and '.pdf' not in absLink and absLink != None and absLink != url and parsedUrl.scheme != '' and parsedUrl.netloc != '' and parsedUrl.scheme != None and parsedUrl.netloc != None:#Gotta be a better way to do this
+			#If url can be parsed correctly, and contains nothing from the exclusions list
+			if all(x not in absLink for x in exclusions) and absLink != None and absLink != url and parsedUrl.scheme != '' and parsedUrl.netloc != '' and parsedUrl.scheme != None and parsedUrl.netloc != None:	
 				links.append(absLink)
 	return links
 

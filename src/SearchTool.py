@@ -15,7 +15,7 @@ maxDepth = 3 # the max depth the crawl will travel
 RESULT_URL = 0 # Index position for URL
 RESULT_RANK = 1 # Index position for Page Rank
 
-seeds = [[0,'http://sarsaparilla/crawltest/crawlTest.html']]
+seeds = []
 
 # list for seed URLs that user inputs
 usrInput = input("Enter seed URL or press ENTER to continue: ")
@@ -28,9 +28,8 @@ while (usrInput != "" and usrInput != " "):
 	else:
 		print('Invalid URL')
 	usrInput = input("Enter seed URL or press ENTER to continue: ")
-	# TODO validate the user's input to check its a valid link
 		
-keyword = input("Enter keyword to search for: ").lower() # TODO: make sure this isnt None or a Space???
+keyword = input("Enter keyword to search for: ").lower() 
 
 spider = Spider.Spider(seeds, maxDepth, keyword) # Create spider object initialised with the users seed urls and keyword
 spider.crawl() # Start crawling process
@@ -89,8 +88,8 @@ rankRes.sort(key=lambda tup: tup[1], reverse=True) # Sort the results from highe
 i = 1
 print("\n===KEYWORD MATCHES===")
 for y in range(len(rankRes)):
-	print(i, ": ", spider.visited[rankRes[y][RESULT_URL]]) 
-	print("  ", SpiderLeg.getTitle(spider.visited[rankRes[y][RESULT_URL]]))
+	print(i, ": ", spider.visited[rankRes[y][RESULT_URL]].encode('850', 'ignore')) 
+	print("  ", SpiderLeg.getTitle(spider.visited[rankRes[y][RESULT_URL]]).encode('850', 'ignore'))
 	print("  (Rank: ", rankRes[y][RESULT_RANK], ")\n")
 	i+=1
 print("")

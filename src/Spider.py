@@ -42,7 +42,7 @@ class Spider:
 					adjacencies.append(i)
 			
 			#If link already in the unvisited list...
-			elif link in (item[Spider.TUPLE_URL_INDEX] for item in self.unvisited):
+			elif link.strip('/') in (item[Spider.TUPLE_URL_INDEX].strip('/') for item in self.unvisited):
 				try:
 					#Calculates the future 'visited' index of the link;
 					i = len(self.visited) + self.unvisited.index(self.unvisited[:][Spider.TUPLE_URL_INDEX])
@@ -83,14 +83,14 @@ class Spider:
 	
 	#Crawls websites from a list of seed urls to a given depth
 	def crawl(self):
-		print("\n=======VISITED=======")
+		print("\n======CRAWLING:======")
 		
 		# open visited file here
 		file = open(Spider.VISITED_FILE_NAME, "w")
 		
 		# loops through URLs in unvisited, adding them to visited
 		while len(self.unvisited) > 0:
-			print("=====================")
+			print("---------------------")
 			url = self.unvisited.pop(0)
 			
 			self.depth = url[Spider.TUPLE_DEPTH_INDEX] # this will get depth value of current URL
@@ -108,7 +108,7 @@ class Spider:
 		# close visited file here 
 		file.close()
 
-#'''
+'''
 #TESTING STUFF
 lanks = [[0, 'http://www.dustyfeet.com']]
 spoder = Spider(lanks, 3, 'tech')
@@ -124,4 +124,4 @@ print("\n=======RESULTS=======")
 for r in spoder.results:
 	print(r)
 print("")
-#'''
+'''

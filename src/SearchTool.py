@@ -1,12 +1,14 @@
 '''
 Created on 10/10/2017
 
-@author: Connor Hewett 15903849 & Craig Fraser
+@author: Connor Hewett 15903849 & Craig Fraser 15889604
 '''
 
 import Spider
+import SpiderLeg
 import codecs
 from operator import itemgetter
+import urllib.parse
 
 # Ask for seed URLs until a space, enter, q is entered
 # Ask for keyword
@@ -14,13 +16,18 @@ from operator import itemgetter
 
 # if keyword in meta keywords, add to list, write to txt & display to screen
 
-seeds = [[0,'http://sarsaparilla/crawltest/crawlTest.html']] # needs to handle multiple REMOVE THIS http://www.dustyfeet.com 
+seeds = []
+
 # list for seed URLs that user inputs
 usrInput = input("Enter seed URL or press ENTER to continue: ") # TO DO: do we make this lowercase ???
 
 while (usrInput != "" and usrInput != " "):
-	seed = [0, usrInput]
-	seeds.append(seed)
+	check = urllib.parse.urlparse(usrInput)
+	if check.netloc != '' and check.scheme != '':
+		seed = [0, usrInput]
+		seeds.append(seed)
+	else:
+		print('Invalid URL')
 	usrInput = input("Enter seed URL or press ENTER to continue: ")
 	# TODO validate the user's input to check its a valid link
 	#if (usrInput != "" and usrInput != " "):
@@ -28,15 +35,13 @@ while (usrInput != "" and usrInput != " "):
 
 keyword = input("Enter keyword to search for: ") # make sure this isnt None or a Space
 
-# Create Spider, passing parameters, searching for meta
-links = []
-
 maxDepth = 3 # the max depth the crawl can go
+
 
 spider = Spider.Spider(seeds, maxDepth, keyword)
 spider.crawl()
 
-# Write the links to a text file
+# Write the keyword matches to a text file
 results = spider.results
 
 file = open("results.txt", "w")
@@ -44,11 +49,6 @@ for result in results:
 	file.write(result+'\r\n')
 file.close()
 	
-# Print links to screen
-print("Results List: ", results)
-print("Adjacenccy: ", spider.adjacencyList)
-
-
 # Calculate the page ranks using the adjacency list
 c = 0.5 # change this to 0.15 like google?
 adjList = spider.adjacencyList
@@ -97,6 +97,11 @@ for z in range(len(spider.results)):
 #rankRes.sort(key=lambda tup: tup[1], reverse=True) # This is slower but reversed
 rankRes.sort(key=itemgetter(1), reverse=True) # This is faster but no need to import something
 
+i = 1
+print("\n===KEYWORD MATCHES===")
 for y in range(len(rankRes)):
-	print("Result: ", spider.visited[rankRes[y][0]])
-	print("Rank: ", rankRes[y][1])
+	print(i, ": ", spider.visited[rankRes[y][0]]) 
+	print("  ", SpiderLeg.getTitle(spider.visited[rankRes[y][0]]))
+	print("  (Rank: ", rankRes[y][1], ")\n")
+	i++
+print("")

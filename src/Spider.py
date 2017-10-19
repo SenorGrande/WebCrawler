@@ -45,10 +45,13 @@ class Spider:
 			elif link.strip('/') in (item[Spider.TUPLE_URL_INDEX].strip('/') for item in self.unvisited):
 				try:
 					#Calculates the future 'visited' index of the link;
-					i = len(self.visited) + self.unvisited.index(self.unvisited[:][Spider.TUPLE_URL_INDEX])
+					if len(self.unvisited) == 1:
+						i = len(self.visited) + 1
+					else:	
+						i = len(self.visited) + self.unvisited.index(self.unvisited[:][Spider.TUPLE_URL_INDEX])
 				except:#Not sure if this is needed, do some testing.
 					i = -1
-					print('???')
+					print('???:', self.unvisited)
 				#Add the calculated adjacency to the list, if it's not already there.
 				if i not in adjacencies:
 					adjacencies.append(i)

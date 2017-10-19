@@ -88,8 +88,8 @@ rankRes.sort(key=lambda tup: tup[1], reverse=True) # Sort the results from highe
 i = 1
 print("\n===KEYWORD MATCHES===")
 for y in range(len(rankRes)):
-	print(i, ": ", spider.visited[rankRes[y][RESULT_URL]].encode('850', 'ignore')) 
-	print("  ", SpiderLeg.getTitle(spider.visited[rankRes[y][RESULT_URL]]).encode('850', 'ignore'))
+	print(i, ": ", spider.visited[rankRes[y][RESULT_URL]].encode('850', 'ignore').decode('850')) 
+	print("  ", SpiderLeg.getTitle(spider.visited[rankRes[y][RESULT_URL]]).encode('850', 'ignore').decode('850'))
 	print("  (Rank: ", rankRes[y][RESULT_RANK], ")\n")
 	i+=1
 print("")

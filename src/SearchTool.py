@@ -36,7 +36,7 @@ spider.crawl() # Start crawling process
 
 results = spider.results # Get list of URL results from the Spider
 adjList = spider.adjacencyList
-c = 0.5 # This is the damping factor - change this to 0.15 like google?
+c = 0.15 # This is the damping factor
 pArray = [[0 for col in range(len(adjList))] for row in range(len(adjList))] # Stores the page ranks matrix
 vArray = [1/len(adjList) for col in range(len(adjList))]
 scaled = [0 for col in range(len(adjList))]
@@ -74,7 +74,7 @@ for i in range(len(adjList)):
 			temp[j] += (pArray[j][k] * vArray[k])
 	
 	vArray = temp
-	scale = 1.0 / min(vArray) # TODO: could use max
+	scale = 1.0 / min(vArray)
 	
 	for l in range(len(adjList)):
 		scaled[l] = vArray[l] * scale

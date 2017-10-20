@@ -14,6 +14,8 @@ import urllib.parse
 maxDepth = 3 # the max depth the crawl will travel
 RESULT_URL = 0 # Index position for URL
 RESULT_RANK = 1 # Index position for Page Rank
+changing = True # True if the PageRank Vector is changing notably, False once the change is less than DELTA
+DELTA = 0.0001 # Once the change between page rank values after an interation is less than this, stop calculating
 
 seeds = []
 
@@ -38,10 +40,8 @@ results = spider.results # Get list of URL results from the Spider
 adjList = spider.adjacencyList
 c = 0.15 # This is the damping factor
 pArray = [[0 for col in range(len(adjList))] for row in range(len(adjList))] # Stores the page ranks matrix
-vArray = [1/len(adjList) for col in range(len(adjList))]
-scaled = [0 for col in range(len(adjList))]
+vArray = [1/len(adjList) for col in range(len(adjList))] # PageRank Vector
 temp = [0 for col in range(len(adjList))]
-scale = 1.0
 rankRes = [] # Store the results hyperlinks and corresponding page rank centrality
 
 # Write the results to a text file
@@ -50,7 +50,7 @@ for result in results:
 	file.write(result+'\r\n')
 file.close()
 
-# Calculate page ranks
+# Calculate PageRank Matrix
 for i in range(len(adjList)):
 	if len(adjList[i]) == 0:
 		for j in range(len(adjList)):
@@ -62,28 +62,31 @@ for i in range(len(adjList)):
 			else:
 				pArray[i][k] = (1.0 - c) / len(adjList) # otherwise
 
-# Transform the page rank array (flip along main diagonal)
+				
+# Transform the PageRank Matrix (flip along main diagonal)
 for i in range(0, len(adjList)):
 	for j in range(i+1, len(adjList)):
 		pArray[i][j],pArray[j][i] = pArray[j][i],pArray[i][j]
+		
 
-# Calculate the page rank centrality
-for i in range(len(adjList)):
+# Calculate the PageRank Vector
+while changing: #for i in range(len(adjList)): # instead of this, while change isnt much
 	for j in range(len(adjList)):
 		for k in range(len(adjList)):
 			temp[j] += (pArray[j][k] * vArray[k])
+		if (abs(vArray[j] - temp[j]) < DELTA):
+			changing = False
+		else:
+			changing = True
 	
 	vArray = temp
-	scale = 1.0 / min(vArray)
-	
-	for l in range(len(adjList)):
-		scaled[l] = vArray[l] * scale
+	temp = [0 for col in range(len(adjList))]
 
 # Create list of URL results with their corresponding Page Rank values
 for i in range(len(spider.results)):
-	rankRes.append([spider.visited.index(spider.results[i]), scaled[spider.visited.index(spider.results[i])]])
+	rankRes.append([spider.visited.index(spider.results[i]), vArray[spider.visited.index(spider.results[i])]])
 
-rankRes.sort(key=lambda tup: tup[1], reverse=True) # Sort the results from highest page rank to lowest
+rankRes.sort(key=lambda tup: tup[1], reverse=True) # Sort the results from highest PageRank to lowest
 
 i = 1
 print("\n===KEYWORD MATCHES===")

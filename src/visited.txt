@@ -1,6 +1,5 @@
-http://sarsaparilla/crawltest/crawlTest.html
-http://sarsaparilla/crawltest/page1.html
-http://sarsaparilla/crawltest/page2.html
-http://sarsaparilla/crawltest/page3.html
-http://sarsaparilla/crawltest/page4.html
-http://sarsaparilla/crawltest/page5.html
+http://ace-hire.com
+http://ace-hire.com/index.php
+http://ace-hire.com/equipment.php
+http://ace-hire.com/contact.php
+http://ace-hire.com/faq.php

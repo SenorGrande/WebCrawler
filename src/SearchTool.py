@@ -1,7 +1,7 @@
 '''
 Created on 10/10/2017
 
-@author: Connor Hewett 15903849 & Craig Fraser 15889604
+@author: Connor Hewett 15903849 & Craig Fraser 15889604 
 '''
 
 import Spider
